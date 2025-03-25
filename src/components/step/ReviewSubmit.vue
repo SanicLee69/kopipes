@@ -581,7 +581,7 @@ const personalityQuestions = ref([
   {
     text: 'Tell us about yourself. (e.g., your hobbies, interests, or past working experience)',
     placeholder: 'Describe how you typically communicate with others...',
-    answer: '',
+    answer: "I'm a fullstack developer. I'm more into a backend development more than a frontend guy. My previous work experience are into developing CRM system. Personally I like to solve puzzle as my hobby. I also do rock climbing. I started rock climbing because of my fear to height. I want to break my comfort zone by doing things that would challenge my comfort zone.",
   }
 ])
 

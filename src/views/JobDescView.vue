@@ -36,6 +36,16 @@
               <span class="icon-success">✓</span>
               <span>{{ education_score }}% education matching</span>
             </div>
+            <div>
+
+<p>{{education_match}}</p>
+<p>{{education_gaps}}</p>
+<p>{{experience_match}}</p>
+<p>{{experience_gaps}}</p>
+<ul>
+  <li v-for="(x, index) in skills_match" :key="index">{{ x }}</li></ul>
+<p>{{skills_gaps}}</p>
+            </div>
           </div>
         </div>
       </div>
@@ -145,17 +155,25 @@ const skill_score = ref(0)
 const experience_score = ref(0)
 const education_score = ref(0)
 const overall_score = ref(0)
+const education_match = ref('')
+const education_gaps = ref('')
+const experience_match = ref('')
+const experience_gaps = ref('')
+const skills_match = ref([])
+const skills_gaps = ref('')
+
+
 onMounted(async () => {
 
   isLoading.value = true
-api.jobDesc(route.query.id, userStore.email || '').then(jobList => {
+  api.jobDesc(route.query.id, userStore.email || '').then(jobList => {
 
-  // console.log(jobList)
+  // console.log(jobList[0])
 
   isLoading.value = false
   if (jobList[0]) {
     const jobdesc = jobList[0]
-    console.log(jobdesc)
+     console.log(jobdesc)
 
     jobTitle.value = jobdesc.name
     company.value = jobdesc.employer.name
@@ -169,6 +187,13 @@ api.jobDesc(route.query.id, userStore.email || '').then(jobList => {
     experience_score.value = jobdesc.user_application.match_json.match_analysis.experience_match.score
     education_score.value = jobdesc.user_application.match_json.match_analysis.education_match.score
     overall_score.value = jobdesc.user_application.match_json.match_analysis.overall_match_score
+
+    education_match.value = jobdesc.user_application.match_json.match_analysis.education_match.matched_requirements[0] || ''
+    education_gaps.value = jobdesc.user_application.match_json.match_analysis.education_match.gaps[0] || ''
+    experience_match.value = jobdesc.user_application.match_json.match_analysis.experience_match.relevant_experience[0] || ''
+    experience_gaps.value = jobdesc.user_application.match_json.match_analysis.experience_match.missing_experience[0] || ''
+    skills_match.value = jobdesc.user_application.match_json.match_analysis.skills_match.matched_skills || []
+    skills_gaps.value = jobdesc.user_application.match_json.match_analysis.skills_match.missing_skills[0] || ''
   }
 })
 });
